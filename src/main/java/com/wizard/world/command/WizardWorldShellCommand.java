@@ -1,4 +1,4 @@
-package com.wizard.world.commands;
+package com.wizard.world.command;
 
 import com.wizard.world.model.Ingredient;
 import com.wizard.world.service.WizardWorldApiService;
