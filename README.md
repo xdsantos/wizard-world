@@ -118,6 +118,10 @@ Output includes each elixir with:
 
 Once you are finished with your inquiries, you can use "exit" on the command line to exit the application.
 
+### Screenshot example:
+
+![Wizard World CLI Screenshot](screenshot-example.png)
+
 ------------------------------------------------------------------------
 
 ## 🧪 Running Tests

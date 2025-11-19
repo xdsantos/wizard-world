@@ -10,6 +10,7 @@ import org.springframework.shell.standard.ShellMethod;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 @Slf4j
 @ShellComponent
@@ -20,13 +21,12 @@ public record WizardWorldShellCommand(WizardWorldApiService wizardWorldApiServic
 
         List<Ingredient> ingredients = wizardWorldApiService.getAllIngredients();
         log.info("Choose one or more ingredients by number (comma-separated, e.g. 1,3,5):");
-        for (int i = 0; i < ingredients.size(); i++) {
-            log.info("{}: {}", i + 1, ingredients.get(i).getName());
-        }
+        IntStream.range(0, ingredients.size())
+                .forEach(index -> log.info("{}: {}", index + 1, ingredients.get(index).getName()));
 
         List<Integer> choices = InputReaderUtils.readNumberChoices(ingredients.size());
         List<String> selectedIngredientNames = choices.stream()
-                .map(i -> ingredients.get(i - 1).getName())
+                .map(choice -> ingredients.get(choice - 1).getName())
                 .toList();
 
         log.info("Fetching elixirs for ingredients: {}", String.join(", ", selectedIngredientNames));
