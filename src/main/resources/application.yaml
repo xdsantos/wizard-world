@@ -1,3 +1,19 @@
 spring:
-  application:
-    name: world
+  main:
+    web-application-type: none
+  shell:
+    interactive:
+      enabled: true
+      ansi-mode: detect
+
+logging:
+  level:
+    root: INFO
+    com.wizard: DEBUG
+  pattern:
+    console: "%msg%n"
+
+heroku:
+  url:
+    path: https://wizard-world-api.herokuapp.com
+

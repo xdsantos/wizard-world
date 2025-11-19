@@ -39,7 +39,11 @@
 			<groupId>org.springframework.shell</groupId>
 			<artifactId>spring-shell-starter</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.13.0</version> <!-- latest version -->
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -54,6 +58,17 @@
 			<groupId>org.springframework.shell</groupId>
 			<artifactId>spring-shell-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.32</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.6</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -70,10 +85,66 @@
 
 	<build>
 		<plugins>
+
+			<!-- OpenAPI Generator -->
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.5.0</version>
+
+				<executions>
+					<execution>
+						<id>generate-client</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/wizard-world.json</inputSpec>
+							<output>${project.build.directory}/generated-sources/openapi</output>
+							<generatorName>java</generatorName>
+							<generateApiTests>false</generateApiTests>
+							<generateModelTests>false</generateModelTests>
+							<configOptions>
+								<apiClientClassName>WizardWorldApiClient</apiClientClassName>
+								<useJakartaEe>true</useJakartaEe>
+								<java8>true</java8>
+								<useOptional>false</useOptional>
+								<nullableReferenceTypes>true</nullableReferenceTypes>
+								<hideGenerationTimestamp>true</hideGenerationTimestamp>
+								<useLombok>true</useLombok>
+							</configOptions>
+
+							<apiPackage>com.wizard.world.generated.api</apiPackage>
+							<modelPackage>com.wizard.world.generated.model</modelPackage>
+							<invokerPackage>com.wizard.world.generated.invoker</invokerPackage>
+
+							<!-- Best for Spring Boot -->
+							<library>webclient</library>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+
+			<!-- Add generated sources to classpath -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.4.0</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals><goal>add-source</goal></goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/openapi/src/main/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
