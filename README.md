@@ -33,7 +33,7 @@ Requirement                              Version
 **Internet connection**                  Required to call Wizard World API
 
 **Heroku API endpoint**                  Already included
-(`wizard-world-api.herokuapp.com`)
+
   -----------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
