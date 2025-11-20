@@ -30,7 +30,7 @@ public record WizardWorldShellCommand(WizardWorldApiService wizardWorldApiServic
                 .toList();
 
         log.info("Fetching elixirs for ingredients: {}", String.join(", ", selectedIngredientNames));
-        selectedIngredientNames.stream()
+        selectedIngredientNames.parallelStream()
                 .map(ingredient -> Map.entry(ingredient, wizardWorldApiService.getElixirByIngredientName(ingredient)))
                 .forEach(entry -> PrintUtils.printElixirs(entry.getKey(), entry.getValue()));
     }
