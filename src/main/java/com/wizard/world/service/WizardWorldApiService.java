@@ -9,6 +9,7 @@ import com.wizard.world.model.Ingredient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -24,6 +25,8 @@ public record WizardWorldApiService(
         return ingredientsApi.ingredientsGet(null)
                 .map(ingredientMapper::mapToIngredient)
                 .collectList()
+                .doOnError(e -> log.error("Could not fetch ingredients, please try again later."))
+                .onErrorReturn(Collections.emptyList())
                 .block();
     }
 
@@ -31,6 +34,8 @@ public record WizardWorldApiService(
         return elixirsApi.elixirsGet(null, null, ingredientName, null, null)
                 .map(elixirMapper::mapToElixir)
                 .collectList()
+                .doOnError(e -> log.error("Failed fetch Elixir for ingredient={}", ingredientName))
+                .onErrorReturn(Collections.emptyList())
                 .block();
     }
 }
